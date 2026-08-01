@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Tracker — 90 Day Challenge
 
-## Getting Started
+An offline-first Progressive Web App for tracking daily habits, books, DSA progress and
+LeetCode volume across a 90-day challenge — with XP, levels, streaks, achievements and charts.
 
-First, run the development server:
+Built with **Next.js 15 · React 19 · TypeScript · Tailwind CSS 4**. All data is stored in
+`localStorage` on your device — no account, no server, no network needed.
+
+## Features
+
+| Screen | What it does |
+| --- | --- |
+| **Dashboard** | Progress ring, current day (1–90), XP level bar, streak, today's completion %, motivational quote, one-tap quick check-in, 90-day heatmap |
+| **Habits** | 14 one-tap habits grouped into Body / Mind, day-by-day navigation, LeetCode easy/medium/hard counters, daily note |
+| **Learning** | Book progress bars, LeetCode donut breakdown, 15-topic DSA roadmap, notes |
+| **Analytics** | Weekly bars, 7/30/90-day completion & XP trend lines, habit consistency ranking, solved-per-day chart, full heatmap, 13 achievements |
+| **Settings** | Name, start date, challenge length, streak threshold, JSON export/import backup, reset |
+
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start        # binds 0.0.0.0 so phones on the same Wi-Fi can reach it
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Install on iPhone
 
-## Learn More
+1. Make sure your iPhone and this computer are on the **same Wi-Fi**.
+2. Open the printed **Network** URL (e.g. `http://192.168.0.110:3000`) in **Safari**.
+3. Tap **Share → Add to Home Screen**.
+4. Launch from the home screen — full screen, no browser chrome.
 
-To learn more about Next.js, take a look at the following resources:
+> iOS only enables service-worker offline caching on `https://` or `localhost`.
+> Over plain LAN http the app still works and still saves data; for full offline
+> support deploy to Vercel (free) and open the `https://` URL.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy free on Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx vercel        # or push to GitHub and import the repo at vercel.com
+```
 
-## Deploy on Vercel
+## Project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+  app/
+    dashboard/    habits/    books/    analytics/    settings/
+    layout.tsx    page.tsx   globals.css
+  components/
+    ProgressRing  XPBar  HabitCard  CalendarHeatmap  Charts  Navbar  Ui  PWARegister
+  lib/
+    types.ts  date.ts  habits.ts  stats.ts  store.tsx
+public/
+  manifest.webmanifest  sw.js  icons/
+scripts/
+  generate-icons.mjs        # regenerates PWA icons: npm run icons
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scoring
+
+- Each habit is worth 10–20 XP; a perfect day adds a 50 XP bonus.
+- LeetCode: easy 2 XP, medium 5 XP, hard 10 XP, plus 10 XP for 3+ in a day.
+- Level *n* requires `250 × n` XP.
+- A day counts towards your streak once you pass the daily target % (default 70%, configurable).
+
+## Backups
+
+Data lives in this browser only. **Settings → Export backup** writes a JSON file;
+**Import backup** restores it on any device.
